@@ -1,0 +1,29 @@
+N, M, K, C = map(int, input().split())
+
+cities = list(map(int, input().split()))
+
+graph = [[] for _ in range(N + 1)]
+for _ in range(M):
+    u, v, t = map(int, input().split())
+    graph[u].append((v, t))
+    graph[v].append((u, t))
+
+dist = [10**9] * (N + 1)
+dist[C] = 0
+queue = [C]
+
+for node in queue:
+    for neighbor, t in graph[node]:
+        new_time = dist[node] + t
+        if new_time < dist[neighbor]:
+            dist[neighbor] = new_time
+            queue.append(neighbor)
+
+result = []
+for city in cities:
+    result.append((dist[city], city))
+
+result.sort()
+
+for time, city in result:
+    print(city, time)
